@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategorieController;
@@ -11,10 +12,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 
+Route::post('/login', [UserController::class, 'login']);
+
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
+Route::post('/register', [UserController::class, 'store']);
 Route::resource('produits', ProduitController::class);
 Route::resource('categories', CategorieController::class);
 Route::resource('users', UserController::class);

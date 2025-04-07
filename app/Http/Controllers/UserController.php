@@ -9,13 +9,32 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+   public function store(Request $request)
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+        'num' => ['required', 'integer'],
+        'password' => ['required', 'string'],
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'num' => $request->num, // ✅ added num here
+        'password' => Hash::make($request->string('password')),
+    ]);
+
+    return response()->json(['message' => 'Utilisateur enregistré avec succès'], 201);
+}
     public function index()
     {
         $users = User::all();
         return response()->json($users);
     }
 
-    public function store(Request $request)
+    public function stores(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
